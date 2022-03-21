@@ -1,0 +1,3 @@
+[submodule "RougePuzzle/Assets/Externals/UnityCommonAssets"]
+	path = RougePuzzle/Assets/Externals/UnityCommonAssets
+	url = https://github.com/yutorisan/UnityCommonAssets.git
