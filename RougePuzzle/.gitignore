@@ -58,4 +58,11 @@ sysinfo.txt
 # Crashlytics generated file
 crashlytics-build.properties
 
+# TMP Directory
 [Aa]ssets/TextMesh Pro/
+
+# Haruko
+/[Aa]ssets/Haruko
+
+# 3d cartoon box map
+/[Aa]ssets/3D Cartoon Box Map
