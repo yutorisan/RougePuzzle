@@ -1,0 +1,183 @@
+@startuml RougePuzzle
+
+namespace Input {
+    interface IObservableInputProvider
+    class InputProvider
+    class Input <<Static>>
+    InputProvider ..|> IObservableInputProvider
+    Input <-- InputProvider
+}
+
+namespace Floor {
+    interface IReadOnlyFloor {
+        +Floor { get; } : IRoRxProp<int>
+    }
+    interface IFloorMover {
+        +GoNextFloor() : void
+    }
+    class FloorManagement
+    FloorManagement ..|> IFloorMover
+    IReadOnlyFloor <|.. FloorManagement
+}
+
+namespace Turn {
+    interface IActor {
+        +GetActionTask() : UniTask
+    }
+
+    interface ITurnScheduler {
+        +ObservableTurnDone() : IObservable<Unit>
+    }
+    class TurnScheduler
+    ITurnScheduler <|.. TurnScheduler
+    TurnScheduler "1" o-- "*" IActor
+
+    class EventInvoker
+    EventInvoker --> Map.IMap
+    ITurnScheduler <-- EventInvoker
+}
+
+namespace Item {
+    interface IItem {
+        +Use() : void
+    }
+    abstract Item
+    IItem <|.. Item
+
+    class Gold
+    class Herb
+    class RiceBall
+    class Scroll
+
+    Item <|-- Gold
+    Item <|-- Herb
+    Item <|-- RiceBall
+    Item <|-- Scroll
+
+    Storage.IScoreEditor <-- Gold
+}
+
+namespace Map {
+    interface IMap
+    class Map
+    IMap <|.. Map
+    interface IMapPiece {
+        +Effect() : void
+    }
+    abstract MapPiece
+    IMapPiece <|.. MapPiece
+    Map "1"*--"*" IMapPiece
+
+    class NormalPiece
+    class WallPiece
+    class ItemPiece
+    class StairsPiece
+    class EnemyPiece
+
+    MapPiece <|-- NormalPiece
+    MapPiece <|-- WallPiece
+    MapPiece <|-- ItemPiece
+    MapPiece <|-- StairsPiece
+    MapPiece <|-- EnemyPiece
+
+    ItemPiece o-- Item.IItem
+    Floor.IFloorMover <-- StairsPiece
+
+    EnemyPiece o-- Enemy.IReadOnlyEnemy
+    EnemyPiece ---> Battle.IBattleInvoker
+
+    namespace Generate {
+        interface IMapGenerator {
+            +Generate() : UniTask
+        }
+        class MapGenerator
+        IMapGenerator <|.. MapGenerator
+        Map.Map - MapGenerator 
+
+        IMapGenerator <-- Floor.FloorManagement
+    }
+}
+
+namespace Player {
+    interface IReadOnlyPlayer {
+        +Position { get; } : IRoRxProp<Cell> 
+        +HP { get; } : int
+        +Attack { get; } : int
+    }
+    interface INavigatablePlayer
+    class Player
+    Player -() IActor
+    IReadOnlyPlayer <|-- INavigatablePlayer
+    INavigatablePlayer <|.. Player
+
+    class PlayerNavigator
+    Input.IObservableInputProvider <-- PlayerNavigator
+    PlayerNavigator --> INavigatablePlayer
+    Storage.IMovementReducer <-- PlayerNavigator
+}
+
+namespace Enemy {
+    interface IReadOnlyEnemy {
+        +Position { get; } : IRoRxProp<Cell> 
+        +HP { get; } : int
+        +Attack { get; } : int
+    }
+    interface INavigatableEnemy
+    class Enemy
+    Enemy -() IActor
+    IReadOnlyEnemy <|-- INavigatableEnemy
+    INavigatableEnemy <|.. Enemy
+
+    class EnemyNavigator
+    EnemyNavigator --> INavigatableEnemy
+    EnemyNavigator -> Player.IReadOnlyPlayer
+    ' EnemyNavigator -[hidden] IReadOnlyEnemy
+}
+
+namespace Battle {
+    interface IBattleInvoker
+    class Battle
+    IBattleInvoker <|.. Battle
+
+    Battle --> Player.IReadOnlyPlayer
+}
+
+namespace Storage {
+    interface IReadOnlyScore {
+        +Score { get; } : IRoRxProp<int>
+    }
+    interface IScoreEditor {
+        +Add(int) : void
+    }
+    class ScoreStorage
+    IReadOnlyScore <|.. ScoreStorage
+    ScoreStorage ..|> IScoreEditor
+
+    interface IReadOnlyMovement {
+        +Movement { get; } : IRoRxProp<int>
+    }
+    interface IMovementReducer {
+        +Reduce() : void
+    }
+    class MovementStorage
+    IReadOnlyMovement <|.. MovementStorage
+    MovementStorage ..|> IMovementReducer
+}
+
+namespace View {
+    class HUD
+
+    interface IViewInfoFacade
+    class ViewInfoFacade
+    IViewInfoFacade <|.. ViewInfoFacade
+
+    HUD --> IViewInfoFacade
+
+    ViewInfoFacade --> Floor.IReadOnlyFloor
+    ViewInfoFacade --> Storage.IReadOnlyScore
+    ViewInfoFacade --> Storage.IReadOnlyMovement
+}
+
+
+
+@enduml
