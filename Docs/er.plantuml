@@ -1,0 +1,85 @@
+@startuml Entity
+
+' 0か1	|o--
+' 1のみ	||--
+' 0以上	}o--
+' 1以上	}|--
+
+entity UnitType {
+    * Id
+    --
+    * Name
+}
+
+entity Unit {
+    * Id
+    --
+    * UnitTypeId FK
+    * Level
+    * Exp
+    * Horizontal
+    * Vertical
+    * Attack
+    * Hp
+    * HpMax
+    * MapId
+    * Xp 
+    ' 倒した時に得られる経験点
+}
+
+Unit }o-- UnitType
+
+entity ItemType {
+    * Id
+    --
+    * Name
+}
+
+entity Item {
+    * Id
+    --
+    * ItemTypeId FK
+    * UnitId FK
+    * Position
+    * Name
+    * Point
+    * EffectTurnNum
+}
+
+Item }o-- ItemType
+Item }o-- Unit
+
+entity Map {
+    * Id
+    --
+    * Row
+    * Column
+    * Level
+}
+
+entity MapPieceType {
+    * Id
+    --
+    * Name
+}
+
+entity MapPiece {
+    * Id
+    --
+    * MapId
+    * MapTypeId
+}
+
+MapPiece }|-- MapPieceType
+MapPiece }|-- Map
+
+entity Score {
+    * UnitId FK
+    --
+    * Highscore
+    * Score
+}
+
+Score ||-- Unit
+
+@enduml

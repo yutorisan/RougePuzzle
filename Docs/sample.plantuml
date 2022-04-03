@@ -1,0 +1,62 @@
+@startuml Sample
+
+namespace SampleScene{
+
+    class SampleInstaller{
+        InstallBindings()
+    }
+
+    class SamplePresenter{
+            private ModelInstances
+            private ViewInstances
+            --
+            Constructor(ModelInstances)
+            Awake()
+            Start()
+    }
+
+    namespace Model{
+        class Item{
+            Id
+            ...
+        }
+        class Map{
+            Id
+            ...
+        }
+        class Unit{
+            Id
+            ...
+        }
+        class Score{
+            Id
+            ...
+        }
+    }
+
+    namespace View{
+        class Item{
+            Awake()
+            event
+        }
+        class Map{
+            Awake()
+        }
+        class Unit{
+            Awake()
+        }
+        class Score{
+            Awake()
+        }
+    }
+
+    namespace Service{
+        class InputProvider{}
+        class Battle{}
+        class TurnScheduler{}
+        class MapGenerator{}
+    }
+
+}
+
+@enduml
