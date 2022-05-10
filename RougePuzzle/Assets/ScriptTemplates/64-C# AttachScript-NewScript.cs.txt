@@ -1,0 +1,33 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UniRx;
+using Zenject;
+
+public class #SCRIPTNAME# : MonoBehaviour
+{
+    #region injection
+
+
+    // zenjectによるDI、コンストラクタっぽく書くとエラーがでるらしい
+    [Inject]
+    public void Constructor ()
+    {
+        #NOTRIM#
+    }
+    #endregion
+
+    #region component
+    
+
+    void Awake ()
+    {
+        #NOTRIM#
+    }
+    #endregion
+
+    void Start ()
+    {
+        #NOTRIM#
+    }
+}
