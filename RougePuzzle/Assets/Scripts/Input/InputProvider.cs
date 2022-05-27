@@ -22,24 +22,20 @@ public interface IObservableInputProvider
 public class InputProvider : IObservableInputProvider
 {
     public IObservable<Unit> OnArrowKeyDown()
-    {
-        return Observable.EveryUpdate()
-            .Where(_ =>
-                Input.GetKeyDown(KeyCode.LeftArrow) ||
-                Input.GetKeyDown(KeyCode.RightArrow) ||
-                Input.GetKeyDown(KeyCode.UpArrow) ||
-                Input.GetKeyDown(KeyCode.DownArrow))
-            .AsUnitObservable();
-    }
+    => Observable.EveryUpdate()
+        .Where(_ =>
+            Input.GetKeyDown(KeyCode.LeftArrow) ||
+            Input.GetKeyDown(KeyCode.RightArrow) ||
+            Input.GetKeyDown(KeyCode.UpArrow) ||
+            Input.GetKeyDown(KeyCode.DownArrow))
+        .AsUnitObservable();
 
     public IObservable<Unit> OnArrowKeyUp()
-    {
-        return Observable.EveryUpdate()
-            .Where(_ =>
-                Input.GetKeyUp(KeyCode.LeftArrow) ||
-                Input.GetKeyUp(KeyCode.RightArrow) ||
-                Input.GetKeyUp(KeyCode.UpArrow) ||
-                Input.GetKeyUp(KeyCode.DownArrow))
-            .AsUnitObservable();
-    }
+    => Observable.EveryUpdate()
+        .Where(_ =>
+            Input.GetKeyUp(KeyCode.LeftArrow) ||
+            Input.GetKeyUp(KeyCode.RightArrow) ||
+            Input.GetKeyUp(KeyCode.UpArrow) ||
+            Input.GetKeyUp(KeyCode.DownArrow))
+        .AsUnitObservable();
 }
