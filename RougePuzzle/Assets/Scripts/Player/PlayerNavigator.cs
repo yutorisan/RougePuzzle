@@ -3,12 +3,21 @@ using System.Collections.Generic;
 using UnityEngine;
 using UniRx;
 using DG.Tweening;
+using Zenject;
 
 public class PlayerNavigator : MonoBehaviour
 {
     #region injection
-    Player player;
-    InputProvider inputProvider;
+    private IObservablePlayer player;
+    private IObservableInputProvider inputProvider;
+    
+    // zenjectによるDI、コンストラクタっぽく書くとエラーがでるらしい
+    [Inject]
+    public void Constructor (IObservablePlayer p, IObservableInputProvider iip)
+    {
+        player = p;
+        inputProvider = iip;
+    }
     #endregion
 
     #region component
@@ -17,9 +26,6 @@ public class PlayerNavigator : MonoBehaviour
 
     void Awake()
     {
-        // ほんとはinjectionでやる
-        inputProvider = new InputProvider();
-        player = new Player();
         // component
         transformCache = GetComponent<Transform>();
     }
