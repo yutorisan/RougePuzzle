@@ -32,16 +32,11 @@ public class PlayerNavigator : MonoBehaviour
     void Start()
     {
         inputProvider.OnArrowKeyDown()
-            .Subscribe(Unit =>
-            {
-                if (CanMove() && !isMoving) { Move(); }
-            });
+            .Where(_ => CanMove() && !isMoving)
+            .Subscribe(_ => Move());
 
         inputProvider.OnArrowKeyUp()
-            .Subscribe(Unit =>
-            {
-                InitInputVector();
-            });
+            .Subscribe(_ => InitInputVector());
     }
 
     private void InitInputVector()
