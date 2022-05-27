@@ -9,23 +9,23 @@ public interface IObservablePlayer
     /// Playerの現在のX,Y,Zの座標
     /// </summary>
     /// <value></value>
-    ReactiveProperty<Vector3> Position { get; set; }
+    ReactiveProperty<Vector3> Position { get; }
     /// <summary>
     /// 体力
     /// </summary>
     /// <value></value>
-    IntReactiveProperty Hp { get; set; }
+    ReactiveProperty<int> Hp { get; }
     /// <summary>
     /// 攻撃力
     /// </summary>
     /// <value></value>
-    IntReactiveProperty Attack { get; set; }
+    ReactiveProperty<int> Attack { get; }
 }
 
 public class Player : IObservablePlayer
 {
-    public ReactiveProperty<Vector3> Position { get; set; } = new ReactiveProperty<Vector3>();
-    public IntReactiveProperty Hp {get;set;}
-    public IntReactiveProperty Attack { get; set; }
+    public ReactiveProperty<Vector3> Position { get; } = new ReactiveProperty<Vector3>();
+    public ReactiveProperty<int> Hp { get; }
+    public ReactiveProperty<int> Attack { get; }
 
 }
