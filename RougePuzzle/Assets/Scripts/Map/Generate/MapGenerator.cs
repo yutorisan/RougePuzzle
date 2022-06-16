@@ -20,7 +20,7 @@ namespace RougePuzzle.Map
         private const int HEIGHT = 10;
 
         [SerializeField]
-        private Map m_map;
+        private Map map;
 
         [Button]
         public async UniTask Generate()
@@ -34,7 +34,7 @@ namespace RougePuzzle.Map
                     array[i, j] = EnumUtils.Random<MapPieceType>();
                 }
             }
-            await m_map.InitializeMap(new Map<MapPieceType>(array));
+            await map.InitializeMap(new Map<MapPieceType>(array));
 
             print("done");
         }

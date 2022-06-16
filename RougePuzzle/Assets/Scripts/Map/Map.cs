@@ -16,11 +16,11 @@ namespace RougePuzzle.Map
     public class Map : SerializedMonoBehaviour, IMap
     {
         [SerializeField]
-        private IReadOnlyDictionary<MapPieceType, MapPiece> m_piecePrefabSettingTable;
+        private IReadOnlyDictionary<MapPieceType, MapPiece> piecePrefabSettingTable;
         [SerializeField]
-        private float m_pieceSize = 1;
+        private float pieceSize = 1;
 
-        private Map<IMapPiece> m_map;
+        private Map<IMapPiece> map;
 
         void Start()
         {
@@ -29,12 +29,12 @@ namespace RougePuzzle.Map
 
         public async UniTask InitializeMap(Map<MapPieceType> typeMap)
         {
-            m_map = new Map<IMapPiece>(typeMap.ColumnCount, typeMap.RowCount);
+            map = new Map<IMapPiece>(typeMap.ColumnCount, typeMap.RowCount);
             foreach (var cell in typeMap.GetCellEnumerable())
             {
-                MapPiece instantiatedPiece = Instantiate<MapPiece>(m_piecePrefabSettingTable[cell.Value], transform);
-                instantiatedPiece.transform.localPosition = new Vector3(cell.Column, cell.Row) * m_pieceSize;
-                m_map[cell.Column, cell.Row] = instantiatedPiece;
+                MapPiece instantiatedPiece = Instantiate<MapPiece>(piecePrefabSettingTable[cell.Value], transform);
+                instantiatedPiece.transform.localPosition = new Vector3(cell.Column, cell.Row) * pieceSize;
+                map[cell.Column, cell.Row] = instantiatedPiece;
                 // １フレーム１ピース生成
                 await UniTask.Yield();
             }
